@@ -1,0 +1,12 @@
+server:
+  port: 8081
+#${random} ，它可以用来生成各种不同类型的随机值
+my:
+  name: 大玉螺旋丸
+  age: 12
+  number: ${random.int}
+  uuid: ${random.uuid}
+  max: ${random.int(10)}
+  value: ${random.value}
+  greeting: hi,I'm ${my.name}
+
