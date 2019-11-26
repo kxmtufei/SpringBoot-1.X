@@ -3,17 +3,12 @@
  */
 package com.example.demo.dao.impl;
 
-<<<<<<< HEAD
 import com.alibaba.druid.sql.PagerUtils;
 import com.alibaba.druid.util.JdbcConstants;
 import com.example.demo.bean.Fruit;
 import com.example.demo.bean.PageBean;
 import com.example.demo.dao.IFruitDao;
 import com.example.demo.util.PageUtil;
-=======
-import com.example.demo.bean.Fruit;
-import com.example.demo.dao.IFruitDao;
->>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,12 +37,9 @@ public class FruitDaoImpl implements IFruitDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-<<<<<<< HEAD
     @Autowired
     private PageUtil pageUtil;
 
-=======
->>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
     @Override
     public int add(Fruit fruit) {
         int update = jdbcTemplate.update("insert into fruit(name,price) values(?,?)", fruit.getName(), fruit.getPrice());
@@ -90,7 +82,6 @@ public class FruitDaoImpl implements IFruitDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from fruit where 1=1 ");
         if (map.containsKey("id") && !ObjectUtils.isEmpty(map.get("id"))){
-<<<<<<< HEAD
             sql.append(" and id=:id ");
         }
         if (map.containsKey("name") && !ObjectUtils.isEmpty(map.get("name"))){
@@ -98,15 +89,6 @@ public class FruitDaoImpl implements IFruitDao {
         }
         if (map.containsKey("price") && !ObjectUtils.isEmpty(map.get("price"))){
             sql.append(" and price in(:price)");
-=======
-            sql.append("and id=:id");
-        }
-        if (map.containsKey("name") && !ObjectUtils.isEmpty(map.get("name"))){
-            sql.append("and name like:name");
-        }
-        if (map.containsKey("price") && !ObjectUtils.isEmpty(map.get("price"))){
-            sql.append("and price in(:ids)");
->>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
         }
         List<Fruit> fruits = namedParameterJdbcTemplate.query(sql.toString(), map, new BeanPropertyRowMapper<>(Fruit.class));
         if (null!=fruits && fruits.size()>0){
@@ -115,7 +97,6 @@ public class FruitDaoImpl implements IFruitDao {
             return null;
         }
     }
-<<<<<<< HEAD
 
     @Override
     public PageBean<Fruit> findByPage(Map map, int pageNum, int pageSize) {
@@ -152,6 +133,4 @@ public class FruitDaoImpl implements IFruitDao {
                 .rows(rows)
                 .build();
     }
-=======
->>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
 }
