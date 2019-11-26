@@ -3,8 +3,12 @@
  */
 package com.example.demo.dao.impl;
 
+import com.alibaba.druid.sql.PagerUtils;
+import com.alibaba.druid.util.JdbcConstants;
 import com.example.demo.bean.Fruit;
+import com.example.demo.bean.PageBean;
 import com.example.demo.dao.IFruitDao;
+import com.example.demo.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +36,9 @@ public class FruitDaoImpl implements IFruitDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    private PageUtil pageUtil;
 
     @Override
     public int add(Fruit fruit) {
@@ -75,13 +82,13 @@ public class FruitDaoImpl implements IFruitDao {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from fruit where 1=1 ");
         if (map.containsKey("id") && !ObjectUtils.isEmpty(map.get("id"))){
-            sql.append("and id=:id");
+            sql.append(" and id=:id ");
         }
         if (map.containsKey("name") && !ObjectUtils.isEmpty(map.get("name"))){
-            sql.append("and name like:name");
+            sql.append(" and name like:name ");
         }
         if (map.containsKey("price") && !ObjectUtils.isEmpty(map.get("price"))){
-            sql.append("and price in(:ids)");
+            sql.append(" and price in(:price)");
         }
         List<Fruit> fruits = namedParameterJdbcTemplate.query(sql.toString(), map, new BeanPropertyRowMapper<>(Fruit.class));
         if (null!=fruits && fruits.size()>0){
@@ -89,5 +96,41 @@ public class FruitDaoImpl implements IFruitDao {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public PageBean<Fruit> findByPage(Map map, int pageNum, int pageSize) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select * from fruit where 1=1 ");
+        if (map.containsKey("id") && !ObjectUtils.isEmpty(map.get("id"))){
+            sql.append(" and id>:id ");
+        }
+        PageBean<Fruit> fruitPage = pageUtil.findByPage(sql.toString(), map, new BeanPropertyRowMapper<>(Fruit.class), pageNum, pageSize);
+        return fruitPage;
+    }
+
+    @Override
+    public PageBean<Fruit> findByPage2(Map map, int pageNum, int pageSize) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select * from fruit where 1=1 ");
+        if (map.containsKey("id") && !ObjectUtils.isEmpty(map.get("id"))){
+            sql.append(" and id>:id ");
+        }
+        String finalSql = sql.toString();
+        // 生成获取记录数的sql
+        String rowsSql = PagerUtils.count(finalSql, JdbcConstants.MYSQL);
+        int rows = namedParameterJdbcTemplate.queryForObject(rowsSql, map, Integer.class);
+        //总页数
+        int totalPage = rows%pageSize == 0 ? 0 : rows/pageSize + 1;
+        // 生成分页取数的sql
+        String pageSql = PagerUtils.limit(finalSql, JdbcConstants.MYSQL, (pageNum-1)*pageSize, pageSize);
+        List<Fruit> content = namedParameterJdbcTemplate.query(pageSql, map, new BeanPropertyRowMapper<>(Fruit.class));
+        return PageBean.<Fruit>builder()
+                .content(content)
+                .pageNum(pageNum)
+                .pageSize(pageSize)
+                .totalPage(totalPage)
+                .rows(rows)
+                .build();
     }
 }

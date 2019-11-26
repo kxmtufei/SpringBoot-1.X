@@ -4,9 +4,11 @@
 package com.example.demo.service;
 
 import com.example.demo.bean.Fruit;
+import com.example.demo.bean.PageBean;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -25,4 +27,6 @@ public interface IFruitService {
     List<Fruit> findAll();
 
     List<Fruit> findFruitsByCon(HashMap<String, Object> map);
+
+    PageBean<Fruit> findByPage(Map map, int pageNum, int pageSize);
 }

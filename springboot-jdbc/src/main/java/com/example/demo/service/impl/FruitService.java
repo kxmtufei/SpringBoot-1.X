@@ -4,6 +4,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.bean.Fruit;
+import com.example.demo.bean.PageBean;
 import com.example.demo.dao.IFruitDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import com.example.demo.service.IFruitService;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -51,5 +53,13 @@ public class FruitService implements IFruitService {
     @Override
     public List<Fruit> findFruitsByCon(HashMap<String, Object> map) {
         return fruitDao.findFruitsByCon(map);
+    }
+
+    @Override
+    public PageBean<Fruit> findByPage(Map map, int pageNum, int pageSize) {
+        //自定义分页
+//        return fruitDao.findByPage(map, pageNum, pageSize);
+        //druid分页
+        return fruitDao.findByPage2(map, pageNum, pageSize);
     }
 }
