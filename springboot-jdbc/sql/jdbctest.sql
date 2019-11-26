@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : wcc
+Source Server         : study
 Source Server Version : 50714
 Source Host           : localhost:3306
 Source Database       : jdbctest
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2019-11-25 18:17:50
+Date: 2019-11-26 18:01:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `fruit` (
   `price` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of fruit
@@ -36,4 +36,4 @@ INSERT INTO `fruit` VALUES ('3', '苹果（进口）', '19.51');
 INSERT INTO `fruit` VALUES ('4', '芒果', '10.00');
 INSERT INTO `fruit` VALUES ('5', '草莓', '8.30');
 INSERT INTO `fruit` VALUES ('6', '榴莲', '29.99');
-INSERT INTO `fruit` VALUES ('8', '菠萝', '16.00');
+INSERT INTO `fruit` VALUES ('9', '葡萄', '21.32');
