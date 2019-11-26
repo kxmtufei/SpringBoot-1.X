@@ -3,12 +3,18 @@
  */
 package com.example.demo.controller;
 
+<<<<<<< HEAD
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.demo.bean.Fruit;
 import com.example.demo.bean.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+=======
+import com.alibaba.druid.support.json.JSONUtils;
+import com.example.demo.bean.Fruit;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.service.IFruitService;
 
@@ -67,6 +73,7 @@ public class FruitController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAllFruit(){
+<<<<<<< HEAD
         List<Fruit> fruits = fruitService.findAll();
         return JSON.toJSONString(fruits, SerializerFeature.PrettyFormat) + "总数：" + fruits.size();
     }
@@ -92,5 +99,19 @@ public class FruitController {
         PageBean<Fruit> fruitPage = fruitService.findByPage(params, page, size);
         return JSON.toJSONString(fruitPage.getContent(), SerializerFeature.PrettyFormat) + "/r/n当前页：" + fruitPage.getPageNum()
                 +" ,每页大小：" + fruitPage.getPageSize() + " ,总页数：" + fruitPage.getTotalPage() + " ,总记录数：" + fruitPage.getRows()  ;
+=======
+        return JSONUtils.toJSONString(fruitService.findAll());
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String getFruitByCon(@RequestParam("id")int id, @RequestParam("name")String name,
+                                @RequestParam("price")double price){
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("name", name);
+        params.put("price", price);
+        List<Fruit> fruits = fruitService.findFruitsByCon(params);
+        return JSONUtils.toJSONString(fruits);
+>>>>>>> d8eb7c9672d99ac9f762bfc18c50afa4a05444a0
     }
 }
