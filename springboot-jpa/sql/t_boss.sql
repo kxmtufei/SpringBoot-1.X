@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2019-11-27 18:22:56
+Date: 2019-11-28 18:03:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `t_boss` (
   `name` varchar(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_l6eehw4jnjrtiowixmuavweh` (`brand`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_boss
@@ -39,4 +39,4 @@ INSERT INTO `t_boss` VALUES ('7', '854.34', '万达', '王健林');
 INSERT INTO `t_boss` VALUES ('8', '1434.34', '小米', '雷军');
 INSERT INTO `t_boss` VALUES ('9', '342.00', '八马茶业', '欧八马');
 INSERT INTO `t_boss` VALUES ('10', '342.00', '富士康', '郭台铭');
-INSERT INTO `t_boss` VALUES ('11', '2012.33', '大润发', '陈发树');
+INSERT INTO `t_boss` VALUES ('11', '2023.00', '大润花', '陈发发');
