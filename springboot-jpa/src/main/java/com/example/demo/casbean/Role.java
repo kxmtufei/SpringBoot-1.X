@@ -25,8 +25,8 @@ public class Role {
 
     private String name; // 角色名称
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name = "t_employee_role", joinColumns = { @JoinColumn(name = "role_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "employee_id") })
-    private List<Employee> employees; // 拥有角色的员工
+//    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+//    @JoinTable(name = "t_employee_role", joinColumns = { @JoinColumn(name = "role_id") }, inverseJoinColumns = {
+//            @JoinColumn(name = "employee_id") })
+//    private List<Employee> employees; // 拥有角色的员工
 }

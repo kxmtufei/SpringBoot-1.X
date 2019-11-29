@@ -108,41 +108,52 @@ public class TestJpa{
     //级联
     @Test
     public void test3(){
-        //先添加部门
-//        Dept dept1 = Dept.builder().name("技术部").build();
-//        Dept dept2 = Dept.builder().name("财务部").build();
-//        Dept dept3 = Dept.builder().name("公关部").build();
-//        Dept dept4 = Dept.builder().name("行政部").build();
-//        Dept dept5 = Dept.builder().name("市场部").build();
-//        deptDao.save(dept1);
-//        deptDao.save(dept2);
-//        deptDao.save(dept3);
-//        deptDao.save(dept4);
-//        deptDao.save(dept5);
+        //添加部门
+//        List<Employee> employees = new ArrayList<>();
+//        employees.add(Employee.builder().name("君君").sex("男")
+//                .address(Address.builder().address("辽宁").build())
+//                .birthday(new Timestamp(System.currentTimeMillis())).build());
+//        employees.add(Employee.builder().name("幂幂").sex("女")
+//                .address(Address.builder().address("北京").build())
+//                .birthday(new Timestamp(System.currentTimeMillis())).build());
+//        Dept dept = Dept.builder().name("财务部").employees(employees).build();
+//        deptDao.save(dept);
+
+        //删除部门
+//        deptDao.delete(5L);
+        //更新角色地址
+//        Employee one = employeeDao.findOne(4L);
+//        one.setAddress(Address.builder().id(4L).address("大理").build());
+//        employeeDao.save(one);
+
+//        Dept one = deptDao.findOne(4L);
+        //getOne是懒加载 需要增加这个配置： spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true，否则 抛异常
+//        could not initialize proxy - no Session，但这种方式不太友好，建议不要使用
+        //每次初始化一个实体的关联就会创建一个临时的session来加载，每个临时的session都会获取一个临时的数据库连接，开启一个新的事物。这就导致对底层连接池压力很大
+//        Dept one = deptDao.getOne(4L);
+//        System.out.println(one);
+        //删除角色
+        employeeDao.delete(1L); //若删除员工中，部门为EAGER 立即加载，则无法删除,若要删除，必须联通关联对象也设置为删除状态,或者设置懒加载
+
 
         //添加角色
 //        Role role1 = Role.builder().name("法师").build();
-//        Role role2 = Role.builder().name("战士").build();
-//        Role role3 = Role.builder().name("刺客").build();
-//        Role role4 = Role.builder().name("射手").build();
-//        Role role5 = Role.builder().name("奶妈").build();
 //        roleDao.save(role1);
-//        roleDao.save(role2);
-//        roleDao.save(role3);
-//        roleDao.save(role4);
-//        roleDao.save(role5);
 
-        Address address = Address.builder().address("厦门").build();
-        Dept dept = Dept.builder().id(1L).name("技术部").build();
-        List<Role> roles = new ArrayList<>();
-        roles.add(Role.builder().id(1L).build());
-        roles.add(Role.builder().id(3L).build());
-        employeeDao.saveAndFlush(Employee.builder().name("狗蛋")
-                .birthday(new Timestamp(System.currentTimeMillis()))
-                .sex("不详")
-                .address(address)
-                .dept(dept).roles(roles).build()
-        );
+        //添加员工
+//        Address address = Address.builder().address("杭州").build();
+//        Dept dept = Dept.builder().name("市场部").build();
+//        List<Role> roles = new ArrayList<>();
+//        roles.add(Role.builder().id(1L).build());
+//        roles.add(Role.builder().id(3L).build());
+//        employeeDao.saveAndFlush(Employee.builder().name("胜男")
+//                .birthday(new Timestamp(System.currentTimeMillis()))
+//                .sex("女")
+//                .address(address)
+//                .dept(dept).build()
+//        );
+
+//        employeeDao.delete(2L);
 //
 //        employeeDao.deleteAllInBatch();
 //        System.out.println(employeeDao.findAll());

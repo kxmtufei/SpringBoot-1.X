@@ -3,8 +3,10 @@
  */
 package com.example.demo.casbean;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,8 +22,11 @@ import java.util.List;
  *@author : wuch
  *@date: 2019/11/28
  */
-@Data
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "t_employee")
 public class Employee  {
@@ -39,19 +44,19 @@ public class Employee  {
     @Column(name = "birthday", nullable = true)
     private Timestamp birthday;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade ={CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE,CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH}, targetEntity = Dept.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "dept_id")
     private Dept dept;
 
     /**
      * joinColumns 用来指定中间表中关联自己ID的字段 inverseJoinColumns 用来指定中间表中关联对方ID的字段
      */
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name = "t_employee_role",
-            joinColumns = {@JoinColumn(name = "employee_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roles;
+//    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+//    @JoinTable(name = "t_employee_role",
+//            joinColumns = {@JoinColumn(name = "employee_id")},inverseJoinColumns = {@JoinColumn(name = "role_id")})
+//    private List<Role> roles;
 }

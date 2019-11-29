@@ -3,8 +3,8 @@
  */
 package com.example.demo.casbean;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,8 +14,12 @@ import java.util.List;
  *@author : wuch
  *@date: 2019/11/28
  */
-@Data
 @Builder
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "t_dept")
 public class Dept {
@@ -25,8 +29,10 @@ public class Dept {
 
     private String name; // 部门名称
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, targetEntity = Employee.class, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
+    @JsonIgnoreProperties(value = {"dept"}) // 控制台
     /**
      * joinColumns 用来指定中间表中关联自己ID的字段 inverseJoinColumns 用来指定中间表中关联对方ID的字段
      */

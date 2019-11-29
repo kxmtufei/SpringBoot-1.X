@@ -6,10 +6,14 @@ package com.example.demo.dao;
 import com.example.demo.casbean.Dept;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  *
  *@author : wuch
  *@date: 2019/11/28
  */
 public interface DeptDao extends JpaRepository<Dept,Long> {
+
+    List<Dept> getByName(String name);
 }
