@@ -3,7 +3,9 @@
  */
 package com.example.demo.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *  兵器类
@@ -11,8 +13,15 @@ import lombok.Data;
  *@date: 2019/11/29
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Weapon {
     private Integer id;
     private String type;
     private String range;
+
+    public Weapon(String type, String range) {
+        this.type = type;
+        this.range = range;
+    }
 }

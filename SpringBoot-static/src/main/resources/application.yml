@@ -1,0 +1,12 @@
+#\u914D\u7F6E\u89C6\u56FE\u524D\u540E\u7F00
+spring:
+  mvc:
+    view:
+      prefix: /static/
+      suffix: .html
+      # \u9ED8\u8BA4\u503C\u4E3A /**
+      #    static-path-pattern:
+    static-path-pattern: /static/**
+      # \u9ED8\u8BA4\u503C\u4E3A classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+#  resources:
+#    static-locations: classpath:/static/

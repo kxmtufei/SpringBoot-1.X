@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BootStrap 实例</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <!-- 引入组件库 -->
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+</head>
+<body class="container">
+    <h2>表格</h2>
+    <p>创建响应式表格 (将在小于768px的小型设备下水平滚动)。另外：添加交替单元格的背景色：</p>
+    <div class="with:80% table-responsive">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#编号</th>
+                <th>兵器种类</th>
+                <th>攻击范围</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="example-2">
+            <tr v-for="item in items">
+                <td>{{ item.id }}</td>
+                <td>{{ item.type }}</td>
+                <td>{{ item.range }}</td>
+                <td>{{ totalMoney }}</td>
+                <td><a class="btn btn-info" role="button">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" role="button">删除</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-2 control-label">
+            <button type="button" class="btn btn-primary">新增</button>
+        </div>
+    </div>
+    <script>
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                totalMoney: 0,
+                items: [
+                    { id: '1', type: '剑', range: '近战' },
+                    { id: '2', type: '弓', range: '远程' }
+                ]
+            },
+            mounted: function () {
+                //这个是钩子函数
+                //如果cartView函数要执行，必须先执行钩子函数
+                //这个钩子函数完成了对cratView函数的调用
+                //应该注意的是，使用mounted 并不能保证钩子函数中的 this.$el 在 document 中。为此还应该引入 Vue.nextTick/vm.$nextTick
+                this.$nextTick(function () {
+                    this.cartView()
+                })
+            },
+            methods: {
+                //这个是要执行的函数
+                cartView: function() {
+                    var _this = this;
+                    axios.get('/list', {
+                        params: {}
+                    })
+                         .then(function (response) {
+                              console.log(response);
+                             _this.items = response.data;
+                             _this.totalMoney = "2";
+                         })
+                         .catch(function (error) {
+                              console.log(error);
+                         });
+//                    this.$http.get("list", {}).then(function(res) {
+//                        _this.items = res.body.result.list;
+//                        _this.totalMoney = "2";
+//                    });
+                }
+            }
+        })
+    </script>
+</body>
+</html>
