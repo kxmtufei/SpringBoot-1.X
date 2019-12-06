@@ -40,4 +40,8 @@ public class WeaponService {
     public List<Weapon> findAll(){
         return weaponMapper.findAll();
     }
+
+    public Weapon findOneName(String type){
+        return weaponMapper.findOneName(type);
+    }
 }

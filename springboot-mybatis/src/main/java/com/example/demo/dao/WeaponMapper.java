@@ -30,6 +30,14 @@ public interface WeaponMapper{
     })
     Weapon findOne(Integer id);
 
+    @Select("SELECT * FROM t_weapon  WHERE type_name = #{type}")
+    @Results({
+            @Result(property = "type", column = "type_name"),
+            @Result(property = "range", column = "attack_range")
+    })
+    Weapon findOneName(String type);
+
+
     @Insert("INSERT INTO t_weapon(type_name,attack_range) VALUES(#{type},#{range})")
     int insert(Weapon weapon);
 

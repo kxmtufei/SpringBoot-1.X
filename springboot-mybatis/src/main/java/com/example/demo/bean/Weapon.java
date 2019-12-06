@@ -19,7 +19,8 @@ public class Weapon {
     private Integer id;
     private String type;
     private String range;
-
+    private String sex;
+    private transient  String imgUrl;
     public Weapon(String type, String range) {
         this.type = type;
         this.range = range;

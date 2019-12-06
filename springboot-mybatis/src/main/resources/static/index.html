@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 包含 bootstrap 样式表 -->
     <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- 引入样式 -->
     <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
     <!-- 引入组件库 -->
@@ -25,6 +27,7 @@
                 <th>兵器种类</th>
                 <th>攻击范围</th>
                 <th>价格</th>
+                <th>造型</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -34,16 +37,77 @@
                 <td>{{ item.type }}</td>
                 <td>{{ item.range }}</td>
                 <td>{{ totalMoney }}</td>
-                <td><a class="btn btn-info" role="button">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" role="button">删除</a></td>
+                <td><img :src="item.imgUrl" alt="暂未上传图片"   width="120" height="75" class="img-responsive img-thumbnail"></td>
+                <td><a class="btn btn-info" role="button" >编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" role="button" :data-num="item.id" ref="dataNum" @click="delItem">删除</a></td>
             </tr>
             </tbody>
         </table>
     </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        新增/编辑 兵器信息
+                    </h4>
+                </div>
+                <form id="weaponForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="id">编号</label>
+                            <input type="text" class="form-control" name="id" id="id" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="type">种类名称</label>
+                            <input type="text" class="form-control" name="type" id="type" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="range">攻击范围</label>
+                            <select class="form-control" name="range" id="range">
+                                <option>近战</option>
+                                <option>远程</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex1">职业</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex1" value="boy"> 男性
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex2" value="girl"> 女性
+                        </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">图片上传</label>
+                            <input type="file" id="file">
+                            <p class="help-block">请上传武器图片</p>
+                        </div>
+                    </div>
+                </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button id="saveBtn" type="button" class="btn btn-primary">
+                            保存
+                        </button>
+                    </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <div class="form-group">
         <div class="col-sm-2 control-label">
-            <button type="button" class="btn btn-primary">新增</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增</button>
         </div>
     </div>
+
+
+
     <script>
         var example2 = new Vue({
             el: '#example-2',
@@ -82,9 +146,71 @@
 //                        _this.items = res.body.result.list;
 //                        _this.totalMoney = "2";
 //                    });
+                },
+                delItem: function(e){
+                    //方法一：操作DOM
+//                    console.log(this.$refs.dataNum.dataset.num); //item.id
+                    //方法二：通过e.target.getAttribute
+                    console.log(e.target.getAttribute('data-num'));//item.id
+
                 }
             }
         })
+    </script>
+    <script>
+        $("#saveBtn").on("click", function(){
+            var id = $("input[name=id]");
+            var type = $("input[name=type]");
+            var range = $("#range option:selected").text();//选中的文本
+//            var rangeVal = $("#range option:selected") .val();//选中的值
+//            var rangeIndex = $("#range ").get(0).selectedIndex;//索引
+            var sex = $('input[name="sex"]:checked').text();
+            var file = $("#file")[0].files[0];
+            if (id.val == ""){
+                //确保输入了数据，否则CSS高亮显示
+                id.addClass("hightlight");
+                return false;
+            }else {
+                id.removeClass("hightlight");
+            }
+            if (type.val == ""){
+                //确保输入了数据，否则CSS高亮显示
+                type.addClass("hightlight");
+                return false;
+            }else {
+                type.removeClass("hightlight");
+            }
+            //FormData的主要用途：将form表单元素的name与value进行组合，实现表单数据的序列化，
+            // 从而减少表单元素的拼接，提高工作效率。异步上传文件
+            var formObJ = $("#weaponForm").get(0);
+            var formData = new FormData(formObJ);
+//            console.log("id " + formData.get("id"));
+            formData.set("file", file);
+            console.log("file " + formData.get("file"));
+            $.ajax({
+                url: "/add",
+                type: 'post',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false, //一定要写
+                processData: false, //一定要写
+                success: function (result) {
+                    //判断数据是不是成功修改
+                    if (result.rows == 1) {
+                        alert("保存成功,图片url: " + result.impUrl);
+                        $('#myModal').modal('hide')
+                        window.location.reload()
+                    } else {
+                        alert("保存失败");
+                    }
+
+                },
+                error: function (data) {
+                    alert("网络请求失败，请重试！");
+                }
+            })
+        });
     </script>
 </body>
 </html>
