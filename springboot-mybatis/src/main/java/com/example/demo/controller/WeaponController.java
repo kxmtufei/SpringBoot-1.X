@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,16 @@ public class WeaponController {
         return one;
     }
 
+    @GetMapping("/delete")
+    @ResponseBody
+    public boolean deleteById(Integer id){
+        int result = service.delete(id);
+        if(result>0){
+            return true;
+        }
+        return false;
+    }
+
     @GetMapping("/list")
     @ResponseBody
     public List<Weapon> findAll(Model model){
@@ -73,12 +84,28 @@ public class WeaponController {
     public Map addOne(HttpServletRequest request, @RequestParam("file") MultipartFile file, Weapon weapon){
         Map<String,Object> result = new HashMap<>(2);
         int add = service.add(weapon);
+        String newName = uplodaFile(file, weapon);
+        result.put("rows", add);
+        result.put("impUrl", "/weapon/" + newName);
+        return result;
+    }
+
+    @PostMapping(value = "/update")
+    @ResponseBody
+    public Map updateOne(HttpServletRequest request, @RequestParam("file") MultipartFile file, Weapon weapon){
+        Map<String,Object> result = new HashMap<>(2);
+        int update = service.update(weapon);
+        String newName = uplodaFile(file, weapon);
+        result.put("rows", update);
+        result.put("impUrl", "/weapon/" + newName);
+        return result;
+    }
+
+    private String uplodaFile(@RequestParam("file") MultipartFile file, Weapon weapon) {
         String newName = "";
         if (null == file){
             log.warn("上传图片为空");
         }else {
-            // 将文件写入到指定目录（具体开发中有可能是将文件写入到云存储/或者指定目录通过 Nginx
-            // 进行 gzip 压缩和反向代理，此处只是为了演示故将地址写成本地电脑指定目录）
             String fileName = file.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
             //编号
@@ -89,14 +116,12 @@ public class WeaponController {
                 if (!Files.exists(path.getParent())){
                     Files.createDirectories(path.getParent());
                 }
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);//强制覆盖已存在的
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);//强制覆盖已存在的
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        result.put("rows", add);
-        result.put("impUrl", "/weapon/" + newName);
-        return result;
+        return newName;
     }
 
 

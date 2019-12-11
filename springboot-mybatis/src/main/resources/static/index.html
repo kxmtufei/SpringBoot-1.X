@@ -19,8 +19,8 @@
 <body class="container">
     <h2>表格</h2>
     <p>创建响应式表格 (将在小于768px的小型设备下水平滚动)。另外：添加交替单元格的背景色：</p>
-    <div class="with:80% table-responsive">
-        <table class="table table-hover">
+    <div id="example-2" class="with:80% table-responsive">
+        <table id="table"  class="table table-hover">
             <thead>
             <tr>
                 <th>#编号</th>
@@ -31,17 +31,22 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody id="example-2">
-            <tr v-for="item in items">
+            <tbody >
+            <tr v-for="item in items " @click="itemSel">
                 <td>{{ item.id }}</td>
                 <td>{{ item.type }}</td>
                 <td>{{ item.range }}</td>
                 <td>{{ totalMoney }}</td>
                 <td><img :src="item.imgUrl" alt="暂未上传图片"   width="120" height="75" class="img-responsive img-thumbnail"></td>
-                <td><a class="btn btn-info" role="button" >编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" role="button" :data-num="item.id" ref="dataNum" @click="delItem">删除</a></td>
+                <td><a class="btn btn-info" role="button" data-toggle="modal" data-target="#myModal" @click="editForm">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" role="button" :data-num="item.id" ref="dataNum" @click="delItem">删除</a></td>
             </tr>
             </tbody>
         </table>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"  @click="addForm">新增</button>
+            </div>
+        </div>
     </div>
 
     <!-- 模态框（Modal） -->
@@ -100,14 +105,6 @@
         </div><!-- /.modal -->
     </div>
 
-    <div class="form-group">
-        <div class="col-sm-2 control-label">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增</button>
-        </div>
-    </div>
-
-
-
     <script>
         var example2 = new Vue({
             el: '#example-2',
@@ -124,7 +121,8 @@
                 //这个钩子函数完成了对cratView函数的调用
                 //应该注意的是，使用mounted 并不能保证钩子函数中的 this.$el 在 document 中。为此还应该引入 Vue.nextTick/vm.$nextTick
                 this.$nextTick(function () {
-                    this.cartView()
+                    this.cartView();
+                    window.cartView = this.cartView;    // 方法赋值给window
                 })
             },
             methods: {
@@ -147,17 +145,60 @@
 //                        _this.totalMoney = "2";
 //                    });
                 },
+                //选中行
+                itemSel: function (e) {
+                    console.log(e);
+                },
+                //新增
+                addForm: function(event){
+//                    $("#form")取得id为form的jQuery对象
+//                    $("#form")[0]可以把这个jquery对象转成html对象
+//                    后面的.reset()方法不是jquery对象的方法，但是是html对象的方法
+                    $('#weaponForm')[0].reset();
+                    $("#id").attr("readonly",true);
+//                    $("#id").val("hello world!");
+                },
+                //编辑
+                editForm: function(event){
+                    $('#weaponForm')[0].reset();
+                    $("#id").removeAttr("readonly");
+                },
                 delItem: function(e){
                     //方法一：操作DOM
 //                    console.log(this.$refs.dataNum.dataset.num); //item.id
                     //方法二：通过e.target.getAttribute
-                    console.log(e.target.getAttribute('data-num'));//item.id
-
+//                    console.log(e.target.getAttribute('data-num'));//item.id
+                    var id =  e.target.getAttribute('data-num');
+                    var _this = this;
+                    axios.get('/delete', {
+                        params: {id:id}
+                    })
+                            .then(function (response) {
+//                                console.log(response);
+                                if(response.data){
+                                    alert("删除成功");
+                                    example2.cartView();
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                 }
             }
         })
     </script>
     <script>
+
+        function getSaveUrl(id){
+            console.log(id)
+            var url;
+            if ( undefined == id.val || id.val()=="" ){
+                url = "/add";
+            }else {
+                url = "/update";
+            }
+            return url;
+        }
         $("#saveBtn").on("click", function(){
             var id = $("input[name=id]");
             var type = $("input[name=type]");
@@ -165,7 +206,6 @@
 //            var rangeVal = $("#range option:selected") .val();//选中的值
 //            var rangeIndex = $("#range ").get(0).selectedIndex;//索引
             var sex = $('input[name="sex"]:checked').text();
-            var file = $("#file")[0].files[0];
             if (id.val == ""){
                 //确保输入了数据，否则CSS高亮显示
                 id.addClass("hightlight");
@@ -185,10 +225,17 @@
             var formObJ = $("#weaponForm").get(0);
             var formData = new FormData(formObJ);
 //            console.log("id " + formData.get("id"));
+            if ($("#file")[0].files.length>0){
+                var file = $("#file")[0].files[0];
+            }else {
+                alert("请选择图片");
+                return;
+            }
             formData.set("file", file);
             console.log("file " + formData.get("file"));
             $.ajax({
-                url: "/add",
+//                url: "/add",
+                url: getSaveUrl(id),
                 type: 'post',
                 data: formData,
                 async: false,
@@ -199,8 +246,9 @@
                     //判断数据是不是成功修改
                     if (result.rows == 1) {
                         alert("保存成功,图片url: " + result.impUrl);
-                        $('#myModal').modal('hide')
-                        window.location.reload()
+                        $('#myModal').modal('hide');
+//                        window.location.reload();
+                        cartView();
                     } else {
                         alert("保存失败");
                     }
