@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  *  兵器类
  *@author : wuch
@@ -20,7 +22,8 @@ public class Weapon {
     private String type;
     private String range;
     private String sex;
-    private transient  String imgUrl;
+    private String imgUrl;
+    private List<WeaponDelt> deltList;
     public Weapon(String type, String range) {
         this.type = type;
         this.range = range;

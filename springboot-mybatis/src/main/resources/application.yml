@@ -70,5 +70,8 @@ spring:
       max-file-size: 5MB
 #      上传请求大小
       max-request-size: 10MB
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #      上传文件临时目录
 #      location:
