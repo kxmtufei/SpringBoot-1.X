@@ -4,6 +4,8 @@
 package com.example.demo.dao;
 
 import com.example.demo.bean.Weapon;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,5 +34,10 @@ public class TestDao {
 //        weaponMapper.findAll().toString();
         weaponMapper.insert(new Weapon("2","2"));
         weaponMapper.delete(6);
+    }
+
+    @Test
+    public void test2(){
+//        weaponMapper.findList();
     }
 }

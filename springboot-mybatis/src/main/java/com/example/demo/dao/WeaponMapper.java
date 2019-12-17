@@ -5,6 +5,7 @@ package com.example.demo.dao;
 
 import com.example.demo.bean.Weapon;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -47,4 +48,14 @@ public interface WeaponMapper{
     @Delete("DELETE FROM t_weapon WHERE id=#{id}")
     int delete(Integer id);
 
+    @Select("SELECT * FROM t_weapon WHERE id=#{id}")
+    @Results(id = "resultMap", value = {
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "type", column = "type_name"),
+            @Result(property = "range", column = "attack_range"),
+            @Result(property = "deltList", column = "id",
+                    many = @Many(select = "com.example.demo.dao.WeaponDeltMapper.findByPid",//一对多
+                            fetchType = FetchType.LAZY))
+    })
+    List<Weapon> findDeltsById(Integer id);
 }

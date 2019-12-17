@@ -20,7 +20,7 @@ public class TestDao2 extends DemoApplicationTests{
 
     @Test
     public void daoTest(){
-        List<Weapon> all = dao.findAll();
+        List<Weapon> all = dao.findDeltsById(1);
         System.out.println(all);
     }
 }
