@@ -64,10 +64,17 @@ public class SpringbootRedisMessageApplication {
 
 		//执行任务
 		for (int i=0;i<2;i++){
-			singleThreadPool.execute(()-> {
+			if (i == 1){
+				singleThreadPool.execute(()-> {
 //				System.out.println(Thread.currentThread().getName())
-				template.convertAndSend("chat", "Hello from Redis!");
-			});
+					template.convertAndSend("chat", "Hello from Redis!");
+				});
+			}else{
+				singleThreadPool.execute(()-> {
+//				System.out.println(Thread.currentThread().getName())
+					template.convertAndSend("chat", "a li ya ka tong ha sha ki!");
+				});
+			}
 		}
 		try {
 			latch.await();
