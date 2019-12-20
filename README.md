@@ -6,3 +6,4 @@ Spring Boot 1.5 Demo
 第三篇：springboot-jpa --> springboot-jpa 整合JPA    
 第四篇：springboot-mybatis --> springboot-mybatis 整合Mybatis   
 第五篇：SpringBoot-static --> SpringBoot-static 静态资源访问   
+第六篇：springboot-redis-message --> Spring Boot Redis消息队列    
