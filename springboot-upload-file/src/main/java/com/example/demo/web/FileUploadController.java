@@ -34,6 +34,11 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
+    /**
+     * 从StorageService中查找上传文件的当前列表，并将其加载到一个Thymeleaf模板中
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public String listUploadedFiles(Model model) {
         List<String> files = storageService.loadAll().map(path ->
@@ -41,10 +46,17 @@ public class FileUploadController {
                         .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
                         .build().toString())
                 .collect(Collectors.toList());
+        model.addAttribute("files",files);
         return "uploadForm";
     }
 
-    @GetMapping("/files/{filename:.+}")
+    /**
+     * 如果资源存在，GET /files/{filename}将加载该资源，
+     * 并使用“content - dispose”响应标头将其发送到浏览器下载
+     * @param filename
+     * @return
+     */
+    @GetMapping("/files/{filename:.+}")//.+后缀
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename){
         Resource file = storageService.loadAsResource(filename);

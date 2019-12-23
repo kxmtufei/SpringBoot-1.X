@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example</groupId>
+	<artifactId>springboot-multi-module</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<!--需要注意的是 根工程的packaging标签为pom 属性。-->
+	<packaging>pom</packaging>
+	<name>springboot-multi-module</name>
+	<description>Spring Boot 多模块工程</description>
+
+	<modules>
+			<module>libary</module>
+			<module>application</module>
+	</modules>
+
+</project>

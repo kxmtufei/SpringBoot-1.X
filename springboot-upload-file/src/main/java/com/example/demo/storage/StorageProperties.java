@@ -15,7 +15,8 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "upload-dir";
+//    private String location = "upload-dir";
+    private String location;
 
     public String getLocation(){
         return location;
@@ -24,4 +25,5 @@ public class StorageProperties {
     public void setLocation(String location){
         this.location = location;
     }
+
 }
