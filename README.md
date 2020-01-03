@@ -13,7 +13,7 @@ Spring Boot 学习Demo
 ## 目录
 |示例|简介|链接|
 |----|-----|-----|
-|**springboot-config**|__配置文件__|[。。。](/springboot-config)|
+|**springboot-config**|__配置文件__(/springboot-config)|
 |**SpringBoot-static**|__静态资源访问__|[。。。](/SpringBoot-static)|
 |**springboot-jdbc**|__整合JDBC__|[。。。](/springboot-jdbc)|
 |**springboot-jpa**|__整合JPA__|[。。。](/springboot-jpa)|
