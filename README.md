@@ -15,13 +15,13 @@ Spring Boot 学习Demo
 |----|-----
 |**springboot-config**|[配置文件](/springboot-config)|
 |**SpringBoot-static**|[静态资源访问](/SpringBoot-static)|
-|**springboot-jdbc**|__整合JDBC__|[。。。](/springboot-jdbc)|
-|**springboot-jpa**|__整合JPA__|[。。。](/springboot-jpa)|
-|**springboot-mybatis**|__整合Mybatis__|[。。。](/springboot-mybatis)|
-|**springboot-redis-message**|__Redis-消息队列__|[。。。](/springboot-redis-message)|
-|**springboot-rabbitmq**|__Rabbitmq-消息队列__|[。。。](/springboot-rabbitmq)|
-|**springboot-resttemplate**|__创建消费RESTful web服务__|[。。。](/springboot-resttemplate)|
-|**springboot-upload-file**|__文件上传、下载__|[。。。](/springboot-upload-file)|
-|**springboot-validate-form**|__表单验证-thymeleaf模板__|[。。。](/springboot-validate-form)|
-|**springboot-handling-form-submission**|__表单提交-thymeleaf模板__|[。。。](/springboot-handling-form-submission)|
-|**springboot-multi-module**|__构建多模块工程，模块之间相互调用__|[。。。](/springboot-multi-module)|
+|**springboot-jdbc**|[整合JDBC](/springboot-jdbc)|
+|**springboot-jpa**|[整合JPA](/springboot-jpa)|
+|**springboot-mybatis**|[整合Mybatis](/springboot-mybatis)|
+|**springboot-redis-message**|[Redis-消息队列](/springboot-redis-message)|
+|**springboot-rabbitmq**|[Rabbitmq-消息队列](/springboot-rabbitmq)|
+|**springboot-resttemplate**|[创建消费RESTful web服务](/springboot-resttemplate)|
+|**springboot-upload-file**|[文件上传、下载](/springboot-upload-file)|
+|**springboot-validate-form**|[表单验证-thymeleaf模板](/springboot-validate-form)|
+|**springboot-handling-form-submission**|[表单提交-thymeleaf模板](/springboot-handling-form-submission)|
+|**springboot-multi-module**|[构建多模块工程，模块之间相互调用](/springboot-multi-module)|
